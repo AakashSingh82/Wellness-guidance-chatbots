@@ -4,15 +4,14 @@ import json
 import os
 import datetime
 
-# =============================
-# CONFIG
-# =============================
+# *CONFIG*
+
 OLLAMA_MODEL = "llama3:8b"
 MEMORY_FILE = "user_memory.json"
 
-# =============================
-# MEMORY HANDLING (LONG-TERM)
-# =============================
+
+# *MEMORY HANDLING (LONG-TERM)*
+
 def load_memory():
     if os.path.exists(MEMORY_FILE):
         with open(MEMORY_FILE, "r") as f:
@@ -26,9 +25,8 @@ def save_memory(memory):
     with open(MEMORY_FILE, "w") as f:
         json.dump(memory, f, indent=2)
 
-# =============================
-# SAFETY AGENT
-# =============================
+# *SAFETY AGENT*
+
 def safety_agent(text):
     danger_phrases = [
         "suicide", "kill myself", "end my life",
@@ -49,9 +47,8 @@ def safety_response():
         "If you want, we can slow your breathing together."
     )
 
-# =============================
-# OLLAMA LLM CALL
-# =============================
+# *OLLAMA LLM CALL*
+
 def call_llm(prompt):
     try:
         result = subprocess.run(
@@ -68,9 +65,8 @@ def call_llm(prompt):
             "Can you tell me a little more about what you’re feeling?"
         )
 
-# =============================
-# REASONING AGENT
-# =============================
+# *REASONING AGENT*
+
 def reasoning_agent(text):
     t = text.lower()
     if t in ["yes", "yeah", "yep", "sure"]:
@@ -89,9 +85,8 @@ def reasoning_agent(text):
         return "motivation"
     return "general"
 
-# =============================
-# ANSWER AGENT (THINKING + MEMORY)
-# =============================
+# *ANSWER AGENT (THINKING + MEMORY)*
+
 def answer_agent(user_input):
     memory = st.session_state.memory
 
@@ -185,9 +180,8 @@ User message:
 """
     return call_llm(prompt)
 
-# =============================
-# STREAMLIT UI
-# =============================
+# *STREAMLIT UI*
+
 st.set_page_config(page_title="Wellness AI Agent", page_icon="🧠")
 st.title("🧠 Wellness AI Agent")
 st.caption("Ask anything about wellness. I think, remember & respond safely.")
@@ -221,3 +215,4 @@ if user_input:
 st.markdown("---")
 st.caption("🧠 Wellness AI | Ollama • Long-Term Memory • Safety • Reasoning")
 st.caption(datetime.datetime.now().strftime("Session Time: %H:%M:%S"))
+
